@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Priority Colors -->
+    <color name="priority_high">#F44336</color>    <!-- Red -->
+    <color name="priority_medium">#FF9800</color>  <!-- Orange -->
+    <color name="priority_low">#4CAF50</color>     <!-- Green -->
+
+    <!-- Category Colors -->
+    <color name="category_work">#2196F3</color>    <!-- Blue -->
+    <color name="category_home">#9C27B0</color>    <!-- Purple -->
+
+    <!-- Material Colors -->
+    <color name="teal_700">#00796B</color>
+    <color name="teal_200">#80CBC4</color>
+    <color name="teal_500">#009688</color>
+
+    <!-- Basic Colors -->
+    <color name="purple_500">#9C27B0</color>
+    <color name="purple_700">#7B1FA2</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+</resources> 
