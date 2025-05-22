@@ -31,10 +31,10 @@ com.example.taskscheduler.app-jetified-activity-1.8.0-29 C:\Users\Kelvin Maharja
 com.example.taskscheduler.app-transition-1.2.0-30 C:\Users\Kelvin Maharjan\.gradle\caches\8.10\transforms\e905b17b3ef96780770c774110c913f5\transformed\transition-1.2.0\res
 com.example.taskscheduler.app-sqlite-2.4.0-31 C:\Users\Kelvin Maharjan\.gradle\caches\8.10\transforms\fd3d29ecff187c2cae9a343665f7a503\transformed\sqlite-2.4.0\res
 com.example.taskscheduler.app-jetified-room-ktx-2.6.1-32 C:\Users\Kelvin Maharjan\.gradle\caches\8.10\transforms\fe9e0a9391e7b4d886cb7b0f065ed82e\transformed\jetified-room-ktx-2.6.1\res
-com.example.taskscheduler.app-pngs-33 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\build\generated\res\pngs\debug
-com.example.taskscheduler.app-resValues-34 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\build\generated\res\resValues\debug
-com.example.taskscheduler.app-packageDebugResources-35 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
-com.example.taskscheduler.app-packageDebugResources-36 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
-com.example.taskscheduler.app-merged_res-37 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\build\intermediates\merged_res\debug
-com.example.taskscheduler.app-debug-38 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\debug\res
-com.example.taskscheduler.app-main-39 C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\res
+com.example.taskscheduler.app-pngs-33 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\build\generated\res\pngs\debug
+com.example.taskscheduler.app-resValues-34 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\build\generated\res\resValues\debug
+com.example.taskscheduler.app-packageDebugResources-35 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\build\intermediates\incremental\debug\packageDebugResources\merged.dir
+com.example.taskscheduler.app-packageDebugResources-36 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\build\intermediates\incremental\debug\packageDebugResources\stripped.dir
+com.example.taskscheduler.app-merged_res-37 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\build\intermediates\merged_res\debug
+com.example.taskscheduler.app-debug-38 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\debug\res
+com.example.taskscheduler.app-main-39 C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\res

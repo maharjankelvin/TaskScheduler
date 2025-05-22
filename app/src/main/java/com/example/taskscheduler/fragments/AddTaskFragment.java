@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import androidx.lifecycle.ViewModelProvider;
+import com.example.taskscheduler.viewmodels.TaskViewModel;
 
 public class AddTaskFragment extends BottomSheetDialogFragment {
     private TextInputLayout titleInputLayout;
@@ -31,12 +33,16 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
     private MaterialButton cancelButton;
     private TaskDao taskDao;
     private ExecutorService executorService;
+    private Task taskToEdit;
+    private TaskViewModel taskViewModel;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        taskDao = AppDatabase.getInstance(requireContext()).taskDao();
-        executorService = Executors.newSingleThreadExecutor();
+        taskViewModel = new ViewModelProvider(requireActivity()).get(TaskViewModel.class);
+        if (getArguments() != null && getArguments().containsKey("task_to_edit")) {
+            taskToEdit = getArguments().getParcelable("task_to_edit");
+        }
     }
 
     @Nullable
@@ -63,7 +69,49 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
         saveButton.setOnClickListener(v -> saveTask());
         cancelButton.setOnClickListener(v -> dismiss());
 
+        // Populate fields if editing a task
+        if (taskToEdit != null) {
+            titleEditText.setText(taskToEdit.getTitle());
+            descriptionEditText.setText(taskToEdit.getDescription());
+            setPriorityRadioButton(taskToEdit.getPriority());
+            setCategoryRadioButton(taskToEdit.getCategory());
+            durationPicker.setValue((int) taskToEdit.getDuration());
+        }
+
         return view;
+    }
+
+    private void setPriorityRadioButton(int priority) {
+        int radioButtonId = -1;
+        switch (priority) {
+            case 1:
+                radioButtonId = R.id.radioLow;
+                break;
+            case 2:
+                radioButtonId = R.id.radioMedium;
+                break;
+            case 3:
+                radioButtonId = R.id.radioHigh;
+                break;
+        }
+        if (radioButtonId != -1) {
+            priorityRadioGroup.check(radioButtonId);
+        }
+    }
+
+    private void setCategoryRadioButton(String category) {
+        int radioButtonId = -1;
+        switch (category) {
+            case "Home":
+                radioButtonId = R.id.radioHome;
+                break;
+            case "Work":
+                radioButtonId = R.id.radioWork;
+                break;
+        }
+        if (radioButtonId != -1) {
+            categoryRadioGroup.check(radioButtonId);
+        }
     }
 
     private void saveTask() {
@@ -108,19 +156,26 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
         long duration = durationPicker.getValue();
 
         // Create and save task
-        Task task = new Task(title, description, priority, category, duration);
-        executorService.execute(() -> {
-            taskDao.insert(task);
-            requireActivity().runOnUiThread(() -> {
-                Toast.makeText(requireContext(), "Task added successfully", Toast.LENGTH_SHORT).show();
-                dismiss();
-            });
-        });
+        if (taskToEdit == null) {
+            // Add new task
+            Task newTask = new Task(title, description, priority, category, duration);
+            taskViewModel.insertTask(newTask);
+            Toast.makeText(requireContext(), "Task added successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            // Update existing task
+            taskToEdit.setTitle(title);
+            taskToEdit.setDescription(description);
+            taskToEdit.setPriority(priority);
+            taskToEdit.setCategory(category);
+            taskToEdit.setDuration(duration);
+            taskViewModel.updateTask(taskToEdit);
+            Toast.makeText(requireContext(), "Task updated successfully", Toast.LENGTH_SHORT).show();
+        }
+        dismiss();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        executorService.shutdown();
     }
 } 

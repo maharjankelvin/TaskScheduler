@@ -20,35 +20,35 @@
 15-->[androidx.core:core:1.12.0] C:\Users\Kelvin Maharjan\.gradle\caches\8.10\transforms\d6e907c7b683018873e123f23d055136\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
 16
 17    <application
-17-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:5:5-18:19
+17-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:5:5-18:19
 18        android:allowBackup="true"
-18-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:6:9-35
+18-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:6:9-35
 19        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 19-->[androidx.core:core:1.12.0] C:\Users\Kelvin Maharjan\.gradle\caches\8.10\transforms\d6e907c7b683018873e123f23d055136\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 20        android:debuggable="true"
 21        android:extractNativeLibs="false"
 22        android:label="@string/app_name"
-22-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:7:9-41
+22-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:7:9-41
 23        android:supportsRtl="true"
-23-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:8:9-35
+23-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:8:9-35
 24        android:testOnly="true"
 25        android:theme="@style/Theme.TaskScheduler" >
-25-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:9:9-51
+25-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:9:9-51
 26        <activity
-26-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:10:9-17:20
+26-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:10:9-17:20
 27            android:name="com.example.taskscheduler.activities.MainActivity"
-27-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:11:13-52
+27-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:11:13-52
 28            android:exported="true" >
-28-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:12:13-36
+28-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:12:13-36
 29            <intent-filter>
-29-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:13:13-16:29
+29-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:13:13-16:29
 30                <action android:name="android.intent.action.MAIN" />
-30-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:14:17-69
-30-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:14:25-66
+30-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:14:17-69
+30-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:14:25-66
 31
 32                <category android:name="android.intent.category.LAUNCHER" />
-32-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:15:17-77
-32-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\task\app\src\main\AndroidManifest.xml:15:27-74
+32-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:15:17-77
+32-->C:\Users\Kelvin Maharjan\AndroidStudioProjects\TaskScheduler\app\src\main\AndroidManifest.xml:15:27-74
 33            </intent-filter>
 34        </activity>
 35

@@ -4,9 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 @Entity(tableName = "tasks")
-public class Task {
+public class Task implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
@@ -105,4 +107,43 @@ public class Task {
     public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
+
+    // Parcelable implementation
+    protected Task(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        description = in.readString();
+        priority = in.readInt();
+        category = in.readString();
+        duration = in.readLong();
+        createdAt = in.readLong();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeInt(priority);
+        dest.writeString(category);
+        dest.writeLong(duration);
+        dest.writeLong(createdAt);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Task> CREATOR = new Creator<Task>() {
+        @Override
+        public Task createFromParcel(Parcel in) {
+            return new Task(in);
+        }
+
+        @Override
+        public Task[] newArray(int size) {
+            return new Task[size];
+        }
+    };
 } 

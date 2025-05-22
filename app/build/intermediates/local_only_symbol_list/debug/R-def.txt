@@ -16,7 +16,9 @@ id buttonCancel
 id buttonSave
 id cardView
 id categoryTextView
+id deleteIcon
 id durationTextView
+id editIcon
 id editTextDescription
 id editTextTitle
 id fabAddTask

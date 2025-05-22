@@ -54,6 +54,22 @@
                 android:layout_height="wrap_content"
                 android:textSize="14sp" />
 
+            <ImageView
+                android:id="@+id/editIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:contentDescription="Edit Task"
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <ImageView
+                android:id="@+id/deleteIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="8dp"
+                android:contentDescription="Delete Task"
+                android:src="@android:drawable/ic_menu_delete" />
+
         </LinearLayout>
 
     </LinearLayout>

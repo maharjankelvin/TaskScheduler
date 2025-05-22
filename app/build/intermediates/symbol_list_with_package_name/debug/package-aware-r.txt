@@ -3232,6 +3232,7 @@ id decelerate
 id decelerateAndComplete
 id decor_content_parent
 id default_activity_button
+id deleteIcon
 id deltaRelative
 id dependency_ordering
 id design_bottom_sheet
@@ -3262,6 +3263,7 @@ id easeInOut
 id easeOut
 id east
 id edge
+id editIcon
 id editTextDescription
 id editTextTitle
 id edit_query

@@ -16,10 +16,12 @@ import com.example.taskscheduler.database.AppDatabase;
 import com.example.taskscheduler.database.TaskDao;
 import com.example.taskscheduler.models.Task;
 import com.example.taskscheduler.viewmodels.TaskViewModel;
+import android.widget.Toast;
+import androidx.fragment.app.FragmentManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClickListener, TaskAdapter.OnDeleteClickListener {
     private RecyclerView recyclerView;
     private TaskAdapter taskAdapter;
     private String category;
@@ -46,6 +48,10 @@ public class TaskListFragment extends Fragment {
         
         taskAdapter = new TaskAdapter();
         recyclerView.setAdapter(taskAdapter);
+        
+        // Set listeners for edit and delete
+        taskAdapter.setOnEditClickListener(this);
+        taskAdapter.setOnDeleteClickListener(this);
         
         // Observe sorting algorithm changes
         taskViewModel.getSortingAlgorithm().observe(getViewLifecycleOwner(), algorithm -> {
@@ -80,5 +86,20 @@ public class TaskListFragment extends Fragment {
                 });
                 break;
         }
+    }
+
+    @Override
+    public void onEditClick(Task task) {
+        AddTaskFragment fragment = new AddTaskFragment();
+        Bundle args = new Bundle();
+        args.putParcelable("task_to_edit", task); // Assuming Task is Parcelable
+        fragment.setArguments(args);
+        fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
+    }
+
+    @Override
+    public void onDeleteClick(Task task) {
+        taskViewModel.deleteTask(task);
+        Toast.makeText(getContext(), "Task deleted: " + task.getTitle(), Toast.LENGTH_SHORT).show();
     }
 } 

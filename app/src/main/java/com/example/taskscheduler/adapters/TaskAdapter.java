@@ -7,6 +7,7 @@ import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -28,13 +29,31 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private String sortingAlgorithm = "First-Come-First-Served (FCFS)"; // Default sorting algorithm
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
     private OnItemClickListener listener;
+    private OnEditClickListener editListener;
+    private OnDeleteClickListener deleteListener;
 
     public interface OnItemClickListener {
         void onItemClick(Task task);
     }
 
+    public interface OnEditClickListener {
+        void onEditClick(Task task);
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeleteClick(Task task);
+    }
+
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
+    }
+
+    public void setOnEditClickListener(OnEditClickListener editListener) {
+        this.editListener = editListener;
+    }
+
+    public void setOnDeleteClickListener(OnDeleteClickListener deleteListener) {
+        this.deleteListener = deleteListener;
     }
 
     public void setTasks(List<Task> tasks) {
@@ -85,6 +104,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         private final TextView priorityTextView;
         private final TextView durationTextView;
         private final TextView subtitleTextView;
+        private final ImageView editIcon;
+        private final ImageView deleteIcon;
 
         TaskViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,11 +115,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             priorityTextView = itemView.findViewById(R.id.priorityTextView);
             durationTextView = itemView.findViewById(R.id.durationTextView);
             subtitleTextView = itemView.findViewById(R.id.subtitleTextView);
+            editIcon = itemView.findViewById(R.id.editIcon);
+            deleteIcon = itemView.findViewById(R.id.deleteIcon);
 
             cardView.setOnClickListener(v -> {
                 int position = getBindingAdapterPosition();
                 if (listener != null && position != RecyclerView.NO_POSITION) {
                     listener.onItemClick(tasks.get(position));
+                }
+            });
+            
+            editIcon.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (editListener != null && position != RecyclerView.NO_POSITION) {
+                    editListener.onEditClick(tasks.get(position));
+                }
+            });
+
+            deleteIcon.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (deleteListener != null && position != RecyclerView.NO_POSITION) {
+                    deleteListener.onDeleteClick(tasks.get(position));
                 }
             });
         }
