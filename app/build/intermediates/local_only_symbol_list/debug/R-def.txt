@@ -37,6 +37,7 @@ id subtitleTextView
 id tabLayout
 id titleTextView
 id toolbar
+id toolbarTitle
 id viewPager
 layout activity_main
 layout fragment_add_task

@@ -3574,6 +3574,7 @@ int id titleTextView 0x7f0801e3
 int id title_template 0x7f0801e4
 int id toggle 0x7f0801e5
 int id toolbar 0x7f0801e6
+int id toolbarTitle 0x7f08020c
 int id top 0x7f0801e7
 int id topPanel 0x7f0801e8
 int id touch_outside 0x7f0801e9

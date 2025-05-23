@@ -3575,6 +3575,7 @@ id titleTextView
 id title_template
 id toggle
 id toolbar
+id toolbarTitle
 id top
 id topPanel
 id touch_outside

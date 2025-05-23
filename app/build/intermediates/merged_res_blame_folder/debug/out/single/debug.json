@@ -24,7 +24,7 @@
         "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\fragment_task_list.xml"
     },
     {
-        "merged": "com.example.taskscheduler.app-merged_res-37:/layout_item_task.xml.flat",
-        "source": "com.example.taskscheduler.app-main-39:/layout/item_task.xml"
+        "merged": "com.example.taskscheduler.app-merged_res-37:/layout_activity_main.xml.flat",
+        "source": "com.example.taskscheduler.app-main-39:/layout/activity_main.xml"
     }
 ]
