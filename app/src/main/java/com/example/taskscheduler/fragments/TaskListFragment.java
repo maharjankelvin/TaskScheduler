@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -16,10 +17,8 @@ import com.example.taskscheduler.database.AppDatabase;
 import com.example.taskscheduler.database.TaskDao;
 import com.example.taskscheduler.models.Task;
 import com.example.taskscheduler.viewmodels.TaskViewModel;
-import android.widget.Toast;
-import androidx.fragment.app.FragmentManager;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClickListener, TaskAdapter.OnDeleteClickListener {
     private RecyclerView recyclerView;
@@ -53,46 +52,29 @@ public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClic
         taskAdapter.setOnEditClickListener(this);
         taskAdapter.setOnDeleteClickListener(this);
         
-        // Observe sorting algorithm changes
+        // Observe tasks and sorting algorithm changes
+        taskViewModel.getTasks().observe(getViewLifecycleOwner(), tasks -> {
+            if (tasks != null) {
+                // Filter tasks by category
+                List<Task> filteredTasks = tasks.stream()
+                    .filter(task -> task.getCategory().equals(category))
+                    .collect(Collectors.toList());
+                taskAdapter.setTasks(filteredTasks);
+            }
+        });
+
         taskViewModel.getSortingAlgorithm().observe(getViewLifecycleOwner(), algorithm -> {
             taskAdapter.setSortingAlgorithm(algorithm);
-            loadTasks(algorithm);
         });
         
         return view;
-    }
-
-    private void loadTasks(String algorithm) {
-        switch (algorithm) {
-            case "First-Come-First-Served (FCFS)":
-                taskDao.getTasksByFirstComeFirstServed(category).observe(getViewLifecycleOwner(), tasks -> {
-                    if (tasks != null) {
-                        taskAdapter.setTasks(tasks);
-                    }
-                });
-                break;
-            case "Shortest Job First (SJF)":
-                taskDao.getTasksByShortestJobFirst(category).observe(getViewLifecycleOwner(), tasks -> {
-                    if (tasks != null) {
-                        taskAdapter.setTasks(tasks);
-                    }
-                });
-                break;
-            case "Priority":
-                taskDao.getTasksByPriority(category).observe(getViewLifecycleOwner(), tasks -> {
-                    if (tasks != null) {
-                        taskAdapter.setTasks(tasks);
-                    }
-                });
-                break;
-        }
     }
 
     @Override
     public void onEditClick(Task task) {
         AddTaskFragment fragment = new AddTaskFragment();
         Bundle args = new Bundle();
-        args.putParcelable("task_to_edit", task); // Assuming Task is Parcelable
+        args.putParcelable("task_to_edit", task);
         fragment.setArguments(args);
         fragment.show(requireActivity().getSupportFragmentManager(), fragment.getTag());
     }

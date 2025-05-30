@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 import com.example.taskscheduler.R;
 import com.example.taskscheduler.adapters.TaskPagerAdapter;
+import com.example.taskscheduler.algorithms.SchedulingAlgorithmFactory;
 import com.example.taskscheduler.fragments.AddTaskFragment;
 import com.example.taskscheduler.fragments.TaskListFragment;
 import com.example.taskscheduler.viewmodels.TaskViewModel;
@@ -48,11 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Setup Sorting Spinner
         spinnerSorting = findViewById(R.id.spinnerSorting);
-        String[] sortingAlgorithms = {
-            "First-Come-First-Served (FCFS)",
-            "Shortest Job First (SJF)",
-            "Priority"
-        };
+        String[] sortingAlgorithms = SchedulingAlgorithmFactory.getAvailableAlgorithms();
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
             this,
             android.R.layout.simple_spinner_item,
@@ -63,20 +60,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Set initial spinner position based on ViewModel
         taskViewModel.getSortingAlgorithm().observe(this, algorithm -> {
-            int position = 0;
             for (int i = 0; i < sortingAlgorithms.length; i++) {
                 if (sortingAlgorithms[i].equals(algorithm)) {
-                    position = i;
+                    spinnerSorting.setSelection(i);
                     break;
                 }
             }
-            spinnerSorting.setSelection(position);
         });
 
+        // Handle spinner selection changes
         spinnerSorting.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
-                String selectedAlgorithm = parent.getItemAtPosition(position).toString();
+                String selectedAlgorithm = sortingAlgorithms[position];
                 taskViewModel.setSortingAlgorithm(selectedAlgorithm);
                 Toast.makeText(MainActivity.this, "Sorting by: " + selectedAlgorithm, Toast.LENGTH_SHORT).show();
             }

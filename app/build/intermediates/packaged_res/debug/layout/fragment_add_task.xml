@@ -123,11 +123,21 @@
         android:text="Duration (minutes)"
         android:layout_marginBottom="4dp"/>
 
-    <NumberPicker
-        android:id="@+id/numberPickerDuration"
-        android:layout_width="386dp"
-        android:layout_height="143dp"
-        android:layout_marginBottom="16dp" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/durationInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/durationEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:hint="Enter duration in minutes"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Action Buttons -->
     <LinearLayout

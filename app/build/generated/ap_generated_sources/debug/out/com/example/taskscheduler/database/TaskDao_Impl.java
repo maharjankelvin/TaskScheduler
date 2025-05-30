@@ -175,7 +175,7 @@ public final class TaskDao_Impl implements TaskDao {
 
   @Override
   public LiveData<List<Task>> getAllTasks() {
-    final String _sql = "SELECT * FROM tasks ORDER BY id DESC";
+    final String _sql = "SELECT * FROM tasks";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
     return __db.getInvalidationTracker().createLiveData(new String[] {"tasks"}, false, new Callable<List<Task>>() {
       @Override
@@ -235,6 +235,61 @@ public final class TaskDao_Impl implements TaskDao {
         _statement.release();
       }
     });
+  }
+
+  @Override
+  public List<Task> getAllTasksSync() {
+    final String _sql = "SELECT * FROM tasks";
+    final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 0);
+    __db.assertNotSuspendingTransaction();
+    final Cursor _cursor = DBUtil.query(__db, _statement, false, null);
+    try {
+      final int _cursorIndexOfId = CursorUtil.getColumnIndexOrThrow(_cursor, "id");
+      final int _cursorIndexOfTitle = CursorUtil.getColumnIndexOrThrow(_cursor, "title");
+      final int _cursorIndexOfDescription = CursorUtil.getColumnIndexOrThrow(_cursor, "description");
+      final int _cursorIndexOfPriority = CursorUtil.getColumnIndexOrThrow(_cursor, "priority");
+      final int _cursorIndexOfCategory = CursorUtil.getColumnIndexOrThrow(_cursor, "category");
+      final int _cursorIndexOfDuration = CursorUtil.getColumnIndexOrThrow(_cursor, "duration");
+      final int _cursorIndexOfCreatedAt = CursorUtil.getColumnIndexOrThrow(_cursor, "created_at");
+      final List<Task> _result = new ArrayList<Task>(_cursor.getCount());
+      while (_cursor.moveToNext()) {
+        final Task _item;
+        final String _tmpTitle;
+        if (_cursor.isNull(_cursorIndexOfTitle)) {
+          _tmpTitle = null;
+        } else {
+          _tmpTitle = _cursor.getString(_cursorIndexOfTitle);
+        }
+        final String _tmpDescription;
+        if (_cursor.isNull(_cursorIndexOfDescription)) {
+          _tmpDescription = null;
+        } else {
+          _tmpDescription = _cursor.getString(_cursorIndexOfDescription);
+        }
+        final int _tmpPriority;
+        _tmpPriority = _cursor.getInt(_cursorIndexOfPriority);
+        final String _tmpCategory;
+        if (_cursor.isNull(_cursorIndexOfCategory)) {
+          _tmpCategory = null;
+        } else {
+          _tmpCategory = _cursor.getString(_cursorIndexOfCategory);
+        }
+        final long _tmpDuration;
+        _tmpDuration = _cursor.getLong(_cursorIndexOfDuration);
+        _item = new Task(_tmpTitle,_tmpDescription,_tmpPriority,_tmpCategory,_tmpDuration);
+        final int _tmpId;
+        _tmpId = _cursor.getInt(_cursorIndexOfId);
+        _item.setId(_tmpId);
+        final long _tmpCreatedAt;
+        _tmpCreatedAt = _cursor.getLong(_cursorIndexOfCreatedAt);
+        _item.setCreatedAt(_tmpCreatedAt);
+        _result.add(_item);
+      }
+      return _result;
+    } finally {
+      _cursor.close();
+      _statement.release();
+    }
   }
 
   @Override
@@ -305,7 +360,7 @@ public final class TaskDao_Impl implements TaskDao {
 
   @Override
   public LiveData<List<Task>> getTasksByCategory(final String category) {
-    final String _sql = "SELECT * FROM tasks WHERE category = ? ORDER BY id DESC";
+    final String _sql = "SELECT * FROM tasks WHERE category = ?";
     final RoomSQLiteQuery _statement = RoomSQLiteQuery.acquire(_sql, 1);
     int _argIndex = 1;
     if (category == null) {

@@ -28,7 +28,8 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
     private TextInputEditText descriptionEditText;
     private RadioGroup priorityRadioGroup;
     private RadioGroup categoryRadioGroup;
-    private NumberPicker durationPicker;
+    private TextInputLayout durationInputLayout;
+    private TextInputEditText durationEditText;
     private MaterialButton saveButton;
     private MaterialButton cancelButton;
     private TaskDao taskDao;
@@ -56,14 +57,10 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
         descriptionEditText = view.findViewById(R.id.editTextDescription);
         priorityRadioGroup = view.findViewById(R.id.radioGroupPriority);
         categoryRadioGroup = view.findViewById(R.id.radioGroupCategory);
-        durationPicker = view.findViewById(R.id.numberPickerDuration);
+        durationInputLayout = view.findViewById(R.id.durationInputLayout);
+        durationEditText = view.findViewById(R.id.durationEditText);
         saveButton = view.findViewById(R.id.buttonSave);
         cancelButton = view.findViewById(R.id.buttonCancel);
-
-        // Setup duration picker
-        durationPicker.setMinValue(1);
-        durationPicker.setMaxValue(480); // 8 hours max
-        durationPicker.setValue(30); // Default 30 minutes
 
         // Setup button listeners
         saveButton.setOnClickListener(v -> saveTask());
@@ -75,7 +72,7 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
             descriptionEditText.setText(taskToEdit.getDescription());
             setPriorityRadioButton(taskToEdit.getPriority());
             setCategoryRadioButton(taskToEdit.getCategory());
-            durationPicker.setValue((int) taskToEdit.getDuration());
+            durationEditText.setText(String.valueOf(taskToEdit.getDuration()));
         }
 
         return view;
@@ -152,8 +149,29 @@ public class AddTaskFragment extends BottomSheetDialogFragment {
             return;
         }
 
-        // Get duration
-        long duration = durationPicker.getValue();
+        // Get and validate duration
+        String durationStr = durationEditText.getText().toString().trim();
+        if (durationStr.isEmpty()) {
+            durationInputLayout.setError("Duration is required");
+            return;
+        }
+        durationInputLayout.setError(null);
+
+        long duration;
+        try {
+            duration = Long.parseLong(durationStr);
+            if (duration <= 0) {
+                durationInputLayout.setError("Duration must be greater than 0");
+                return;
+            }
+            if (duration > 480) { // 8 hours max
+                durationInputLayout.setError("Duration cannot exceed 480 minutes");
+                return;
+            }
+        } catch (NumberFormatException e) {
+            durationInputLayout.setError("Please enter a valid number");
+            return;
+        }
 
         // Create and save task
         if (taskToEdit == null) {

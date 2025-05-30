@@ -17,12 +17,13 @@ id buttonSave
 id cardView
 id categoryTextView
 id deleteIcon
+id durationEditText
+id durationInputLayout
 id durationTextView
 id editIcon
 id editTextDescription
 id editTextTitle
 id fabAddTask
-id numberPickerDuration
 id priorityTextView
 id radioGroupCategory
 id radioGroupPriority

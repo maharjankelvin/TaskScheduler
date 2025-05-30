@@ -23,13 +23,16 @@ public interface TaskDao {
     @Query("DELETE FROM tasks")
     void deleteAllTasks();
 
-    @Query("SELECT * FROM tasks ORDER BY id DESC")
+    @Query("SELECT * FROM tasks")
     LiveData<List<Task>> getAllTasks();
+
+    @Query("SELECT * FROM tasks")
+    List<Task> getAllTasksSync();
 
     @Query("SELECT * FROM tasks WHERE id = :taskId")
     LiveData<Task> getTaskById(int taskId);
 
-    @Query("SELECT * FROM tasks WHERE category = :category ORDER BY id DESC")
+    @Query("SELECT * FROM tasks WHERE category = :category")
     LiveData<List<Task>> getTasksByCategory(String category);
 
     @Query("SELECT * FROM tasks WHERE category = :category ORDER BY created_at ASC, title ASC")

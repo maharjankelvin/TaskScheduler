@@ -3257,6 +3257,8 @@ id dragRight
 id dragStart
 id dragUp
 id dropdown_menu
+id durationEditText
+id durationInputLayout
 id durationTextView
 id easeIn
 id easeInOut
@@ -3415,7 +3417,6 @@ id north
 id notification_background
 id notification_main_column
 id notification_main_column_container
-id numberPickerDuration
 id off
 id on
 id onInterceptTouchReturnSwipe
