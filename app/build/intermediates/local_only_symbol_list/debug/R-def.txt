@@ -43,8 +43,6 @@ id viewPager
 layout activity_main
 layout fragment_add_task
 layout fragment_task_list
-layout fragment_tasks
 layout item_task
-layout task_item
 string app_name
 style Theme.TaskScheduler
