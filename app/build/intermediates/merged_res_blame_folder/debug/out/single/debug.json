@@ -1,7 +1,31 @@
 [
     {
-        "merged": "com.example.taskscheduler.app-merged_res-37:/layout_item_task.xml.flat",
-        "source": "com.example.taskscheduler.app-main-39:/layout/item_task.xml"
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_item_task.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\item_task.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\menu_menu_main.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\menu\\menu_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_activity_main.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_item_category.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\item_category.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_fragment_add_task.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\fragment_add_task.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_fragment_task_list.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\fragment_task_list.xml"
+    },
+    {
+        "merged": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-merged_res-37:\\layout_fragment_category_list.xml.flat",
+        "source": "C:\\Users\\Kelvin Maharjan\\.gradle\\daemon\\8.10\\com.example.taskscheduler.app-main-39:\\layout\\fragment_category_list.xml"
     },
     {
         "merged": "com.example.taskscheduler.app-merged_res-37:/layout_fragment_task_list.xml.flat",

@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.taskscheduler.R;
 import com.example.taskscheduler.models.Task;
+import com.example.taskscheduler.models.GhostTask;
 import com.google.android.material.card.MaterialCardView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     private static final int VIEW_TYPE_PRIORITY = 2;
 
     private List<Task> tasks = new ArrayList<>();
+    private List<GhostTask> ghostTasks = null;
+    private boolean isGhostMode = false;
     private String sortingAlgorithm = "First-Come-First-Served (FCFS)"; // Default sorting algorithm
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy HH:mm", Locale.getDefault());
     private OnItemClickListener listener;
@@ -41,7 +44,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
     }
 
     public interface OnDeleteClickListener {
-        void onDeleteClick(Task task);
+        void onDeleteClick(Object taskOrChunkId);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -63,6 +66,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     public void setSortingAlgorithm(String algorithm) {
         this.sortingAlgorithm = algorithm;
+        notifyDataSetChanged();
+    }
+
+    public void setGhostTasks(List<GhostTask> ghostTasks) {
+        this.ghostTasks = ghostTasks;
+        this.isGhostMode = ghostTasks != null;
         notifyDataSetChanged();
     }
 
@@ -88,13 +97,16 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull TaskViewHolder holder, int position) {
-        Task task = tasks.get(position);
-        holder.bind(task);
+        if (isGhostMode) {
+            holder.bindGhost(ghostTasks.get(position));
+        } else {
+            holder.bind(tasks.get(position));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return tasks.size();
+        return isGhostMode ? (ghostTasks == null ? 0 : ghostTasks.size()) : tasks.size();
     }
 
     class TaskViewHolder extends RecyclerView.ViewHolder {
@@ -196,6 +208,43 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             } else {
                 priorityTextView.setTextColor(Color.BLACK);
             }
+            // --- Robust fix: always show and set listeners for real tasks ---
+            editIcon.setVisibility(View.VISIBLE);
+            deleteIcon.setVisibility(View.VISIBLE);
+            editIcon.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (editListener != null && position != RecyclerView.NO_POSITION) {
+                    editListener.onEditClick(tasks.get(position));
+                }
+            });
+            deleteIcon.setOnClickListener(v -> {
+                int position = getBindingAdapterPosition();
+                if (deleteListener != null && position != RecyclerView.NO_POSITION) {
+                    deleteListener.onDeleteClick(tasks.get(position));
+                }
+            });
+        }
+
+        void bindGhost(GhostTask ghostTask) {
+            titleTextView.setText(ghostTask.getTitle());
+            subtitleTextView.setText(ghostTask.getDescription());
+            categoryTextView.setText(ghostTask.getCategory());
+            categoryTextView.setTextColor(getCategoryColor(ghostTask.getCategory()));
+            String priorityText = "Priority: " + getPriorityText(ghostTask.getPriority());
+            priorityTextView.setText(priorityText);
+            priorityTextView.setTextColor(Color.BLACK);
+            durationTextView.setText(ghostTask.getAllocatedTime() + " minutes");
+            // Disable edit icon for ghost tasks
+            editIcon.setVisibility(View.GONE);
+            // Enable delete icon
+            deleteIcon.setVisibility(View.VISIBLE);
+            deleteIcon.setOnClickListener(v -> {
+                int pos = getBindingAdapterPosition();
+                if (deleteListener != null && pos != RecyclerView.NO_POSITION) {
+                    // Pass the uniqueChunkId for ghost tasks
+                    deleteListener.onDeleteClick(ghostTask.getUniqueChunkId());
+                }
+            });
         }
 
         private String getPriorityText(int priority) {

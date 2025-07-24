@@ -16,6 +16,7 @@ import com.example.taskscheduler.adapters.TaskAdapter;
 import com.example.taskscheduler.database.AppDatabase;
 import com.example.taskscheduler.database.TaskDao;
 import com.example.taskscheduler.models.Task;
+import com.example.taskscheduler.models.GhostTask;
 import com.example.taskscheduler.viewmodels.TaskViewModel;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -65,6 +66,22 @@ public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClic
 
         taskViewModel.getSortingAlgorithm().observe(getViewLifecycleOwner(), algorithm -> {
             taskAdapter.setSortingAlgorithm(algorithm);
+            if (!"Round Robin (RR)".equals(algorithm) && !"Weighted Round Robin (WRR)".equals(algorithm)) {
+                taskAdapter.setGhostTasks(null); // Force normal mode
+            }
+        });
+        
+        // Observe ghost tasks for RR/WRR
+        taskViewModel.getGhostTasks().observe(getViewLifecycleOwner(), ghostTasks -> {
+            if (ghostTasks != null) {
+                // Only show ghost tasks for this category
+                List<GhostTask> filteredGhosts = ghostTasks.stream()
+                    .filter(gt -> gt.getCategory().equals(category))
+                    .collect(Collectors.toList());
+                taskAdapter.setGhostTasks(filteredGhosts);
+            } else {
+                taskAdapter.setGhostTasks(null);
+            }
         });
         
         return view;
@@ -72,6 +89,8 @@ public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClic
 
     @Override
     public void onEditClick(Task task) {
+        // Disable editing for ghost tasks
+        if (task == null) return;
         AddTaskFragment fragment = new AddTaskFragment();
         Bundle args = new Bundle();
         args.putParcelable("task_to_edit", task);
@@ -80,8 +99,14 @@ public class TaskListFragment extends Fragment implements TaskAdapter.OnEditClic
     }
 
     @Override
-    public void onDeleteClick(Task task) {
-        taskViewModel.deleteTask(task);
-        Toast.makeText(getContext(), "Task deleted: " + task.getTitle(), Toast.LENGTH_SHORT).show();
+    public void onDeleteClick(Object taskOrChunkId) {
+        if (taskOrChunkId instanceof String) {
+            // Deleting a ghost task chunk: remove from ViewModel
+            taskViewModel.deleteGhostChunk((String) taskOrChunkId);
+            Toast.makeText(getContext(), "Ghost task chunk completed!", Toast.LENGTH_SHORT).show();
+        } else if (taskOrChunkId instanceof Task) {
+            taskViewModel.deleteTask((Task) taskOrChunkId);
+            Toast.makeText(getContext(), "Task deleted: " + ((Task) taskOrChunkId).getTitle(), Toast.LENGTH_SHORT).show();
+        }
     }
 } 

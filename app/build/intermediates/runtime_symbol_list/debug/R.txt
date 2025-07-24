@@ -1370,6 +1370,16 @@ int color cardview_shadow_end_color 0x7f05002e
 int color cardview_shadow_start_color 0x7f05002f
 int color category_home 0x7f050030
 int color category_work 0x7f050031
+int color colorBackground 0x7f05030e
+int color colorOnBackground 0x7f05030f
+int color colorOnPrimary 0x7f050310
+int color colorOnSecondary 0x7f050311
+int color colorOnSurface 0x7f050312
+int color colorPrimary 0x7f050313
+int color colorPrimaryVariant 0x7f050314
+int color colorSecondary 0x7f050315
+int color colorSecondaryVariant 0x7f050316
+int color colorSurface 0x7f050317
 int color design_bottom_navigation_shadow_color 0x7f050032
 int color design_box_stroke_color 0x7f050033
 int color design_dark_default_color_background 0x7f050034

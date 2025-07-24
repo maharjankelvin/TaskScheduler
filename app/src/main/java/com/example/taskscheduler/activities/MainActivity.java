@@ -17,6 +17,9 @@ import com.example.taskscheduler.viewmodels.TaskViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import android.app.AlertDialog;
+import android.text.InputType;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
@@ -73,7 +76,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> parent, android.view.View view, int position, long id) {
                 String selectedAlgorithm = sortingAlgorithms[position];
-                taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                if (selectedAlgorithm.equals("Round Robin (RR)") || selectedAlgorithm.equals("Weighted Round Robin (WRR)")) {
+                    // Prompt for quantum
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Set Time Slice (minutes)");
+                    final EditText input = new EditText(MainActivity.this);
+                    input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                    input.setHint("e.g. 5");
+                    builder.setView(input);
+                    builder.setPositiveButton("OK", (dialog, which) -> {
+                        String value = input.getText().toString();
+                        long quantum = 5L;
+                        try {
+                            quantum = Long.parseLong(value);
+                            if (quantum <= 0) quantum = 5L;
+                        } catch (Exception e) {
+                            quantum = 5L;
+                        }
+                        taskViewModel.setQuantum(quantum);
+                        taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                        Toast.makeText(MainActivity.this, "Time slice set to: " + quantum + " minutes", Toast.LENGTH_SHORT).show();
+                    });
+                    builder.setNegativeButton("Cancel", (dialog, which) -> {
+                        dialog.cancel();
+                        // Optionally revert spinner selection
+                    });
+                    builder.show();
+                } else {
+                    taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                }
                 Toast.makeText(MainActivity.this, "Sorting by: " + selectedAlgorithm, Toast.LENGTH_SHORT).show();
             }
 

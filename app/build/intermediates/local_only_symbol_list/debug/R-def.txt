@@ -3,6 +3,16 @@ local
 color black
 color category_home
 color category_work
+color colorBackground
+color colorOnBackground
+color colorOnPrimary
+color colorOnSecondary
+color colorOnSurface
+color colorPrimary
+color colorPrimaryVariant
+color colorSecondary
+color colorSecondaryVariant
+color colorSurface
 color priority_high
 color priority_low
 color priority_medium
