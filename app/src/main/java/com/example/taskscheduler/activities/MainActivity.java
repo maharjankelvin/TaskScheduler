@@ -20,6 +20,8 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import android.app.AlertDialog;
 import android.text.InputType;
 import android.widget.EditText;
+import android.os.Build;
+import android.content.pm.PackageManager;
 
 public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
@@ -32,6 +34,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Request POST_NOTIFICATIONS permission on Android 13+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, 1001);
+            }
+        }
 
         // Initialize ViewModel
         taskViewModel = new ViewModelProvider(this).get(TaskViewModel.class);
@@ -94,8 +103,20 @@ public class MainActivity extends AppCompatActivity {
                             quantum = 5L;
                         }
                         taskViewModel.setQuantum(quantum);
-                        taskViewModel.setSortingAlgorithm(selectedAlgorithm);
-                        Toast.makeText(MainActivity.this, "Time slice set to: " + quantum + " minutes", Toast.LENGTH_SHORT).show();
+                        // Prompt for notification enable
+                        new AlertDialog.Builder(MainActivity.this)
+                            .setTitle("Enable Notifications?")
+                            .setMessage("Do you want to receive notifications for each ghost task chunk in this session?")
+                            .setPositiveButton("Yes", (d, w) -> {
+                                taskViewModel.setGhostNotificationEnabled(true);
+                                taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                                Toast.makeText(MainActivity.this, "Notifications enabled!", Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("No", (d, w) -> {
+                                taskViewModel.setGhostNotificationEnabled(false);
+                                taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                            })
+                            .show();
                     });
                     builder.setNegativeButton("Cancel", (dialog, which) -> {
                         dialog.cancel();
@@ -103,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
-                    taskViewModel.setSortingAlgorithm(selectedAlgorithm);
+                taskViewModel.setSortingAlgorithm(selectedAlgorithm);
                 }
                 Toast.makeText(MainActivity.this, "Sorting by: " + selectedAlgorithm, Toast.LENGTH_SHORT).show();
             }

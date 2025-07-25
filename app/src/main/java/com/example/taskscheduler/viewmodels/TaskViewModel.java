@@ -16,19 +16,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.HashSet;
 import java.util.Set;
+import android.content.Context;
+import com.example.taskscheduler.utils.NotificationHelper;
+import android.os.Handler;
+import android.os.Looper;
 
 public class TaskViewModel extends AndroidViewModel {
     private final MutableLiveData<String> sortingAlgorithm = new MutableLiveData<>(SchedulingAlgorithmFactory.getAvailableAlgorithms()[0]);
     private final MutableLiveData<List<Task>> tasks = new MutableLiveData<>();
     private final MutableLiveData<Long> quantum = new MutableLiveData<>(5L); // Default quantum in minutes
     private final MutableLiveData<List<GhostTask>> ghostTasks = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> ghostNotificationEnabled = new MutableLiveData<>(false);
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final AppDatabase database;
     private final Set<String> deletedGhostChunks = new HashSet<>();
+    private static TaskViewModel instance;
 
     public TaskViewModel(Application application) {
         super(application);
         database = AppDatabase.getInstance(application);
+        instance = this;
     }
 
     public LiveData<String> getSortingAlgorithm() {
@@ -57,9 +64,31 @@ public class TaskViewModel extends AndroidViewModel {
         return ghostTasks;
     }
 
+    public LiveData<Boolean> getGhostNotificationEnabled() {
+        return ghostNotificationEnabled;
+    }
+    public void setGhostNotificationEnabled(boolean enabled) {
+        ghostNotificationEnabled.setValue(enabled);
+    }
+
     public void deleteGhostChunk(String chunkId) {
         deletedGhostChunks.add(chunkId);
         refreshTasks();
+    }
+
+    public static void handleGhostChunkDone(Context context, String chunkId) {
+        if (instance != null) {
+            instance.deleteGhostChunk(chunkId);
+        }
+    }
+
+    private void scheduleGhostNotifications(List<GhostTask> ghostTasks) {
+        // Schedule notifications for each ghost chunk
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(() -> NotificationHelper.scheduleGhostTaskNotifications(getApplication(), ghostTasks, 0));
+    }
+    private void cancelGhostNotifications() {
+        // TODO: Implement cancel logic if needed
     }
 
     public void refreshTasks() {
@@ -69,15 +98,28 @@ public class TaskViewModel extends AndroidViewModel {
             SchedulingAlgorithm algorithm;
             if ("Round Robin (RR)".equals(algoName)) {
                 RRAlgorithm rr = new RRAlgorithm(quantum.getValue() != null ? quantum.getValue() : 5L);
-                ghostTasks.postValue(rr.generateGhostTasks(allTasks, deletedGhostChunks));
+                List<GhostTask> ghosts = rr.generateGhostTasks(allTasks, deletedGhostChunks);
+                ghostTasks.postValue(ghosts);
+                if (Boolean.TRUE.equals(ghostNotificationEnabled.getValue())) {
+                    scheduleGhostNotifications(ghosts);
+                } else {
+                    cancelGhostNotifications();
+                }
                 algorithm = rr;
             } else if ("Weighted Round Robin (WRR)".equals(algoName)) {
                 WeightedRRAlgorithm wrr = new WeightedRRAlgorithm(quantum.getValue() != null ? quantum.getValue() : 5L);
-                ghostTasks.postValue(wrr.generateGhostTasks(allTasks, deletedGhostChunks));
+                List<GhostTask> ghosts = wrr.generateGhostTasks(allTasks, deletedGhostChunks);
+                ghostTasks.postValue(ghosts);
+                if (Boolean.TRUE.equals(ghostNotificationEnabled.getValue())) {
+                    scheduleGhostNotifications(ghosts);
+                } else {
+                    cancelGhostNotifications();
+                }
                 algorithm = wrr;
             } else {
                 ghostTasks.postValue(null);
                 deletedGhostChunks.clear(); // Reset when switching algorithms
+                cancelGhostNotifications();
                 algorithm = SchedulingAlgorithmFactory.getAlgorithm(algoName);
             }
             if (algorithm != null) {
